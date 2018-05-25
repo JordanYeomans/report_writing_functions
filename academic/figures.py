@@ -58,7 +58,7 @@ class SubPlot():
         elif add_data_to is not None:
 
             # Add to existing subplot or creating new subplot
-            assert add_data_to <= self.current_plot, 'Adding Data to a plot that does not exist'
+            assert add_data_to <= self.current_plot + 1, 'Adding Data to a plot that does not exist'
 
             try:
                 self.fig = plt.subplot(self.height, self.width, add_data_to)
@@ -94,8 +94,7 @@ class SubPlot():
 
         # Add Subplot title
         if title is not None:
-            title = '(' + self.current_letter + ') ' + title
-            self.fig = plt.title(title,fontdict=self.title_font)
+            self.add_subplot_title(title)
 
     def adjust_plot(self,left=0.1,bottom=0.13,right=0.99,top=0.92,wspace=0.32,hspace=0.2):
         self.fig = plt.subplots_adjust(left=left, bottom=bottom, right=right, top=top, wspace=wspace, hspace=hspace)
@@ -105,3 +104,17 @@ class SubPlot():
 
     def save_figure(self, save_name):
         self.fig = plt.savefig(save_name, pad_inches = 0)
+
+    def add_subplot_title(self, title, plot_num = None, letter = None):
+
+        if plot_num is not None:
+            self.current_plot = plot_num
+
+        if letter is not None:
+            self.current_letter = letter
+
+        self.fig = plt.subplot(self.height, self.width, self.current_plot)
+        self.current_letter = string.ascii_lowercase[self.current_plot - 1]
+        title = '(' + self.current_letter + ') ' + title
+        self.fig = plt.title(title, fontdict=self.title_font)
+        self.current_plot += 1
