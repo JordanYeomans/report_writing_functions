@@ -26,6 +26,9 @@ class SubPlot():
         self.current_letter = 0
 
         self.fig = plt.figure(self.figure_num, figsize=self.figsize, dpi=self.dpi)
+
+
+
         self.adjust_plot()
 
     def add_subplot_data(self,
@@ -40,7 +43,8 @@ class SubPlot():
                          add_data_to = None,
                          data_size = 1,
                          color = None,
-                         linestyle = None
+                         linestyle = None,
+                         legend_label = None
                          ):
 
         # Create New Subplot
@@ -62,18 +66,19 @@ class SubPlot():
 
             try:
                 self.fig = plt.subplot(self.height, self.width, add_data_to)
+
             except ValueError:
                 print('Problem with add_data_to - Plot out of range')
                 raise
 
         # Define Type Of Plot And Add Data To Plot
         if type == 'scatter':
-            self.fig = plt.scatter(x_data,y_data, s=data_size, color=color)
+            self.fig = plt.scatter(x_data,y_data, s=data_size, color=color, label = legend_label)
         elif type == 'plot':
             if y_data is None:
-                self.fig = plt.plot(x_data, color=color, linestyle=linestyle, linewidth=data_size)
+                self.fig = plt.plot(x_data, color=color, linestyle=linestyle, linewidth=data_size, label = legend_label)
             if y_data is not None:
-                self.fig = plt.plot(x_data, y_data, color=color, linestyle=linestyle, linewidth=data_size)
+                self.fig = plt.plot(x_data, y_data, color=color, linestyle=linestyle, linewidth=data_size, label = legend_label)
         else:
             raise Exception
 
@@ -83,6 +88,7 @@ class SubPlot():
         # Add Axis Limits
         if xlim is not None:
             self.axes = plt.xlim(xlim)
+
         if ylim is not None:
             self.axes = plt.ylim(ylim)
 
@@ -91,6 +97,7 @@ class SubPlot():
             self.axes = plt.xlabel(xlabel,fontdict=self.label_font)
         if ylabel is not None:
             self.axes = plt.ylabel(ylabel,fontdict=self.label_font)
+
 
         # Add Subplot title
         if title is not None:
@@ -118,3 +125,7 @@ class SubPlot():
         title = '(' + self.current_letter + ') ' + title
         self.fig = plt.title(title, fontdict=self.title_font)
         self.current_plot += 1
+
+    def add_legend(self, bbox = [0.0, 1.02, 1.0, 0.102], loc = 3, ncol = 5, mode = 'expand'):
+        self.fig = plt.legend(bbox_to_anchor=bbox, loc=loc,
+           ncol=ncol, mode=mode, borderaxespad=0, frameon=False)
