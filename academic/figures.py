@@ -120,6 +120,9 @@ class SubPlot():
         if letter is not None:
             self.current_letter = letter
 
+        if self.current_plot == 0:
+            self.current_plot = 1
+
         self.fig = plt.subplot(self.height, self.width, self.current_plot)
         self.current_letter = string.ascii_lowercase[self.current_plot - 1]
         title = '(' + self.current_letter + ') ' + title
